@@ -11,3 +11,4 @@
 * Type `java serializeFinder`
 * Enter history in this format `w 1 x r 2 x w 2 y r 3 y w 3 z r 1 z`
 * Press `Enter`
+* If it is serializable, it prints out "true" otherwise "false"
