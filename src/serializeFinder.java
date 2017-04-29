@@ -46,40 +46,31 @@ public class serializeFinder {
 			String data = historyArray.get(i)[2];
 
 			//read the rest of the transaction operations
-			innerloop:
-				for (int j = i + 1; j < historyArray.size(); j++) {
-					//current transaction number and compared transaction number have to be different
-					if (!transactionNo.equals(historyArray.get(j)[0])) {
-						//both transaction operations data have to be same
-						if (data.equals(historyArray.get(j)[2])) {
-							String[] link = new String[2];
-							//if current operation is write, then both writing and reading are acceptable 
-							if (operation.equals("w")) {
+			for (int j = i + 1; j < historyArray.size(); j++) {
+				//current transaction number and compared transaction number have to be different
+				if (!transactionNo.equals(historyArray.get(j)[0])) {
+					//both transaction operations data have to be same
+					if (data.equals(historyArray.get(j)[2])) {
+						String[] link = new String[2];
+						//if current operation is write, then both writing and reading are acceptable 
+						if (operation.equals("w")) {
+							link[0] = transactionNo; 
+							link[1] = historyArray.get(j)[0];
+							linkedTransactions.add(link);
+						}
+						//if current operation is read, then only writing is acceptable 
+						if (operation.equals("r")) {
+							if (historyArray.get(j)[1].equals("w")) {
 								link[0] = transactionNo; 
 								link[1] = historyArray.get(j)[0];
-								linkedTransactions.add(link);
-								//we fond a link, for simplicity we do not continue for the rest of the operations of transactions
-								break innerloop;
-							}
-							//if current operation is read, then only writing is acceptable 
-							if (operation.equals("r")) {
-								if (historyArray.get(j)[1].equals("w")) {
-									link[0] = transactionNo; 
-									link[1] = historyArray.get(j)[0];
-									linkedTransactions.add(link);
-									//we found a link, for simplicity we do not continue for the rest of the operations of transactions
-									break innerloop;	
-								}
+								linkedTransactions.add(link);	
 							}
 						}
 					}
 				}
+			}
 		}
-		/*
-		//print out edges between nodes e.i for T1 to T2 [1,2] 
-		for (int z = 0; z < linkedTransactions.size(); z++) {
-			System.out.println(Arrays.toString(linkedTransactions.get(z)));
-		}*/
+
 		numberOfNodes = maxNo;
 		int adjacencyMatrix[][] = new int[numberOfNodes + 1][numberOfNodes + 1];
 
